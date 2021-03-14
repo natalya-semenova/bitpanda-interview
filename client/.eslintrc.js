@@ -26,35 +26,41 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
+  plugins: ['prettier'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'import/order': ['error', {
-      alphabetize: {
-        caseInsensitive: true,
-        order: 'asc',
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          caseInsensitive: true,
+          order: 'asc',
+        },
+        groups: [
+          'builtin',
+          'external',
+          'unknown',
+          'internal',
+          ['parent', 'sibling'],
+          'index',
+        ],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            group: 'internal',
+            pattern: '@/**',
+          },
+          {
+            group: 'internal',
+            pattern: '@components/**',
+          },
+        ],
+        pathGroupsExcludedImportTypes: [],
       },
-      groups: [
-        'builtin',
-        'external',
-        'unknown',
-        'internal',
-        ['parent', 'sibling'],
-        'index',
-      ],
-      'newlines-between': 'always',
-      pathGroups: [
-        {
-          group: 'internal',
-          pattern: '@/**',
-        },
-        {
-          group: 'internal',
-          pattern: '@components/**',
-        },
-      ],
-      pathGroupsExcludedImportTypes: [],
-    }],
+    ],
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
     'padding-line-between-statements': [
       'error',
       {
