@@ -63,6 +63,8 @@ module.exports = {
     ],
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
+    'no-param-reassign': ['error', { props: false }],
+    'no-underscore-dangle': 'off',
     'padding-line-between-statements': [
       'error',
       {
