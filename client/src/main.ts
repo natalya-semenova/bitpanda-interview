@@ -1,7 +1,7 @@
 import VueCompositionAPI from '@vue/composition-api';
 import Vue from 'vue';
 
-import App from './App.vue';
+import App from './components/App.vue';
 
 Vue.config.productionTip = false;
 
