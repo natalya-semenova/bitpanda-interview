@@ -18,3 +18,22 @@ export function fetchTodos(offset = 0): Promise<FetchTodosResponse> {
     res.json()
   ) as Promise<FetchTodosResponse>;
 }
+
+export async function deleteTodo(todo: Todo): Promise<boolean> {
+  const url = new URL(`${basePath}/todo/${todo._id}`);
+
+  const res = await fetch(url.toString(), {
+    method: 'DELETE',
+  });
+
+  return res.ok;
+}
+
+export function updateTodo(todo: Todo): Promise<Todo> {
+  const url = new URL(`${basePath}/todo/${todo._id}`);
+
+  return fetch(url.toString(), {
+    method: 'PUT',
+    body: JSON.stringify(todo),
+  }).then((res) => res.json()) as Promise<Todo>;
+}
