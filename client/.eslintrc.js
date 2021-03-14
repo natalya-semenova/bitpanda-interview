@@ -17,6 +17,8 @@ module.exports = {
     'plugin:vue/essential',
 
     'airbnb-base',
+
+    'eslint-config-prettier',
   ],
   parserOptions: {
     extraFileExtensions: ['.vue'],
