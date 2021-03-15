@@ -1,6 +1,7 @@
 <template lang="pug">
 .todo-list
   ul
+    create-todo-item
     todo-item(
       v-for='todo in todos',
       :key='todo._id',
@@ -11,9 +12,12 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from '@vue/composition-api';
+
+import CreateTodoItem from './CreateTodoItem.vue';
 import TodoItem from './TodoItem.vue';
 
-export default {
+export default defineComponent({
   name: 'todo-list',
   props: ['todos'],
   data() {
@@ -22,9 +26,10 @@ export default {
   methods: {},
   computed: {},
   components: {
+    CreateTodoItem,
     TodoItem,
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

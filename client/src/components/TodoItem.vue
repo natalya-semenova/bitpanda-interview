@@ -1,6 +1,9 @@
 <template lang="pug">
 li.todo-item 
-  checkbox(:checked='todo.done', @change='onDoneChange(todo)')
+  checkbox.todo-item_checkbox(
+    :checked='todo.done',
+    @change='onDoneChange(todo)'
+  )
   span.todo-item_description {{ todo.description }}
   span.todo-item_remove(@click='$emit("remove", todo)')
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,6 +35,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../mixins.scss';
+
 .todo-item {
   display: flex;
   justify-content: flex-start;
@@ -39,14 +44,21 @@ export default defineComponent({
   min-height: 3rem;
   border-top: 1px solid #c6c6c6;
 
+  &_checkbox {
+    margin: 5px 0.5rem 5px 10px;
+  }
+
   &_description {
     text-align: left;
   }
 
   &_remove {
-    margin: 0 19px 0 auto;
-    padding: 5px;
-    cursor: pointer;
+    @include action-button;
+    visibility: hidden;
+  }
+
+  &:hover &_remove {
+    visibility: visible;
   }
 }
 </style>

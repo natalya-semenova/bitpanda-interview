@@ -23,7 +23,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5px 6px 5px 10px;
   border: 0.888889px solid #e5e5e5;
   border-radius: 50%;
   cursor: pointer;
