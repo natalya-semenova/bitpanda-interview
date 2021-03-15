@@ -3,15 +3,16 @@
   .todo-app
     todo-list(
       :todos='todos',
+      @create-todo='createTodo($event)',
       @done-change='updateTodo($event)',
-      @remove='removeTodo($event)'
+      @remove-todo='removeTodo($event)'
     )
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
 
-import { deleteTodo, fetchTodos, updateTodo } from '@/api/todo-api';
+import { createTodo, deleteTodo, fetchTodos, updateTodo } from '@/api/todo-api';
 import { Paging } from '@/models/paging';
 import { Todo } from '@/models/todo';
 
@@ -25,7 +26,7 @@ export default defineComponent({
     const paging = ref<Paging>({} as Paging);
 
     const getTodos = async () => {
-      const response = await fetchTodos();
+      const response = await fetchTodos(0, 10);
 
       todos.value = response.items;
       paging.value = response.meta;
@@ -42,6 +43,18 @@ export default defineComponent({
     this.getTodos().catch((e) => console.error(e));
   },
   methods: {
+    async createTodo(description: string) {
+      try {
+        const createdTodo = await createTodo(description);
+        // TODO only slice if paging limit reached
+        const todos = this.todos.slice(0, -1);
+
+        todos.unshift(createdTodo);
+        this.todos = todos;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     async updateTodo(todo: Todo) {
       try {
         await updateTodo(todo);
@@ -67,6 +80,8 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+  padding: 50px 0;
 }
 
 .todo-app {

@@ -8,15 +8,31 @@ export interface FetchTodosResponse {
 
 const basePath = 'http://localhost:3000/api/v1';
 
-export function fetchTodos(offset = 0): Promise<FetchTodosResponse> {
+export function fetchTodos(
+  offset = 0,
+  limit = 20
+): Promise<FetchTodosResponse> {
   const url = new URL(`${basePath}/todo`);
-  const params = new URLSearchParams({ offset: offset.toString() });
+  const params = new URLSearchParams({
+    offset: offset.toString(),
+    limit: limit.toString(),
+  });
 
   url.search = params.toString();
 
   return fetch(url.toString()).then((res) =>
     res.json()
   ) as Promise<FetchTodosResponse>;
+}
+
+export async function createTodo(description: string): Promise<Todo> {
+  const url = new URL(`${basePath}/todo`);
+
+  return fetch(url.toString(), {
+    method: 'POST',
+    body: JSON.stringify({ description }),
+    headers: new Headers({ 'Content-type': 'application/json' }),
+  }).then((res) => res.json()) as Promise<Todo>;
 }
 
 export async function deleteTodo(todo: Todo): Promise<boolean> {
@@ -35,5 +51,6 @@ export function updateTodo(todo: Todo): Promise<Todo> {
   return fetch(url.toString(), {
     method: 'PUT',
     body: JSON.stringify(todo),
+    headers: new Headers({ 'Content-type': 'application/json' }),
   }).then((res) => res.json()) as Promise<Todo>;
 }

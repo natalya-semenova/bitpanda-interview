@@ -1,13 +1,13 @@
 <template lang="pug">
 .todo-list
   ul
-    create-todo-item
+    create-todo-item(@create='$emit("create-todo", $event)')
     todo-item(
       v-for='todo in todos',
       :key='todo._id',
       :todo='todo',
       @done-change='$emit("done-change", $event)',
-      @remove='$emit("remove", $event)'
+      @remove='$emit("remove-todo", $event)'
     ) {{ todo.description }}
 </template>
 
