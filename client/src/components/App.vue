@@ -7,6 +7,7 @@
       @done-change='updateTodo($event)',
       @remove-todo='removeTodo($event)'
     )
+    pager(:paging='paging', @paging='onPaging($event)')
 </template>
 
 <script lang="ts">
@@ -16,17 +17,18 @@ import { createTodo, deleteTodo, fetchTodos, updateTodo } from '@/api/todo-api';
 import { Paging } from '@/models/paging';
 import { Todo } from '@/models/todo';
 
+import Pager from './Pager.vue';
 import TodoList from './TodoList.vue';
 
 export default defineComponent({
   name: 'App',
-  components: { TodoList },
+  components: { TodoList, Pager },
   setup() {
     const todos = ref<Todo[]>([]);
     const paging = ref<Paging>({} as Paging);
 
-    const getTodos = async () => {
-      const response = await fetchTodos(0, 10);
+    const getTodos = async (offset = 0, limit = 10) => {
+      const response = await fetchTodos(offset, limit);
 
       todos.value = response.items;
       paging.value = response.meta;
@@ -70,6 +72,10 @@ export default defineComponent({
         console.error(e);
       }
     },
+    onPaging(paging: Paging) {
+      // TODO handle err
+      this.getTodos(paging.offset, paging.limit).catch((e) => console.error(e));
+    },
   },
 });
 </script>
@@ -81,7 +87,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  padding: 50px 0;
+  padding: 50px 25px;
 }
 
 .todo-app {
