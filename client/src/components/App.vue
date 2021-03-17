@@ -26,7 +26,6 @@ import TodoList from './TodoList.vue';
 
 export default defineComponent({
   name: 'App',
-  components: { TodoList, Pager, Search },
   setup() {
     const searchTerm = ref('');
     const todos = ref<Todo[]>([]);
@@ -39,9 +38,14 @@ export default defineComponent({
       paging.value = response.meta;
     };
 
+    let debounceId: number;
+
     watch(searchTerm, (newSearchTerm) => {
-      // debounce should be here, but let's not make it too perfect :P
-      getTodos(0, undefined, newSearchTerm).catch((e) => console.error(e));
+      clearTimeout(debounceId);
+
+      debounceId = setTimeout(() => {
+        getTodos(0, undefined, newSearchTerm).catch((e) => console.error(e));
+      }, 300);
     });
 
     return {
@@ -95,6 +99,7 @@ export default defineComponent({
       this.getTodos(paging.offset, paging.limit).catch((e) => this.onError(e));
     },
   },
+  components: { TodoList, Pager, Search },
 });
 </script>
 
@@ -106,7 +111,7 @@ $todos-width: 589px;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  padding: 100px 25px 50px 25px;
+  padding: 100px 25px 50px;
 }
 
 .todo-app {
