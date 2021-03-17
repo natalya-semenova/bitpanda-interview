@@ -54,9 +54,7 @@ export default defineComponent({
 
   &_text {
     margin: 22px auto 16px 30px;
-    border: none;
-    outline: 0;
-    background: transparent;
+    flex: 1 0 auto;
     font-style: normal;
     font-weight: normal;
   }

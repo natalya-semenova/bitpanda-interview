@@ -10,13 +10,16 @@ const basePath = 'http://localhost:3000/api/v1';
 
 export function fetchTodos(
   offset = 0,
-  limit = 20
+  limit = 20,
+  description?: string
 ): Promise<FetchTodosResponse> {
   const url = new URL(`${basePath}/todo`);
   const params = new URLSearchParams({
     offset: offset.toString(),
     limit: limit.toString(),
   });
+
+  if (description) params.set('description', description);
 
   url.search = params.toString();
 

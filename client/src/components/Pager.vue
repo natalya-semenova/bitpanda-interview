@@ -27,7 +27,7 @@ export default defineComponent({
       const paging = { ...this.paging };
 
       paging.offset += paging.limit * dir;
-      this.$emit('paging', paging);
+      this.$emit('change', paging);
     },
   },
   components: { Chevron },
