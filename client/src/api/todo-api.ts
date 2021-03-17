@@ -6,20 +6,25 @@ export interface FetchTodosResponse {
   meta: Paging;
 }
 
+export interface FetchTodosOptions {
+  offset: number;
+  limit?: number;
+  description?: string;
+}
+
 const basePath = 'http://localhost:3000/api/v1';
 
 export function fetchTodos(
-  offset = 0,
-  limit = 20,
-  description?: string
+  options: FetchTodosOptions
 ): Promise<FetchTodosResponse> {
   const url = new URL(`${basePath}/todo`);
   const params = new URLSearchParams({
-    offset: offset.toString(),
-    limit: limit.toString(),
+    offset: options.offset.toString(),
   });
 
-  if (description) params.set('description', description);
+  if (options.limit) params.set('limit', options.limit.toString());
+
+  if (options.description) params.set('description', options.description);
 
   url.search = params.toString();
 

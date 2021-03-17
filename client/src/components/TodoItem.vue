@@ -50,15 +50,16 @@ export default defineComponent({
 
   &_description {
     text-align: left;
+    padding: 5px 0;
   }
 
   &_remove {
     @include action-button;
-    visibility: hidden;
+    z-index: -1;
   }
 
   &:hover &_remove {
-    visibility: visible;
+    z-index: 0;
   }
 }
 </style>

@@ -21,13 +21,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../variables.scss';
+
 $height: 32px;
 
 .search {
   width: 100%;
   height: $height;
   background: #dbdbdb;
-  border-radius: 12px;
+  border-radius: $component-border-radius;
   text-align: left;
   display: flex;
   justify-content: flex-start;

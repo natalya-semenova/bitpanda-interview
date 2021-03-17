@@ -35,6 +35,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../variables.scss';
+
 .pager {
   width: 69px;
   height: 34px;
@@ -42,7 +44,7 @@ export default defineComponent({
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.17);
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: $component-border-radius;
   display: flex;
   align-items: center;
   overflow: hidden;

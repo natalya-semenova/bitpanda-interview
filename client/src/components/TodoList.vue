@@ -1,7 +1,10 @@
 <template lang="pug">
 .todo-list
   ul
-    create-todo-item(@create='$emit("create-todo", $event)')
+    create-todo-item(
+      :class='{ sole: listEmpty }',
+      @create='$emit("create-todo", $event)'
+    )
     todo-item(
       v-for='todo in todos',
       :key='todo._id',
@@ -12,19 +15,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, PropType } from '@vue/composition-api';
+
+import { Todo } from '@/models/todo';
 
 import CreateTodoItem from './CreateTodoItem.vue';
 import TodoItem from './TodoItem.vue';
 
 export default defineComponent({
   name: 'todo-list',
-  props: ['todos'],
+  props: { todos: { type: Array as PropType<Todo[]>, required: true } },
   data() {
     return {};
   },
+  computed: {
+    listEmpty(): boolean {
+      return !this.todos?.length;
+    },
+  },
   methods: {},
-  computed: {},
   components: {
     CreateTodoItem,
     TodoItem,
@@ -33,11 +42,19 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '../variables.scss';
+
 .todo-list {
-  border-radius: 12px;
+  border-radius: $component-border-radius;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.17);
   box-sizing: border-box;
   width: 100%;
+}
+
+.create-todo {
+  &.sole {
+    border-radius: $component-border-radius;
+  }
 }
 </style>

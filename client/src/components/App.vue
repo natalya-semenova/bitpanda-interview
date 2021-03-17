@@ -8,7 +8,9 @@
       @done-change='updateTodo($event)',
       @remove-todo='removeTodo($event)'
     )
-    pager(:paging='paging', @change='onPaging($event)')
+    .todo-list-footer
+      span.error(v-if='error') Operation failed
+      pager(:paging='paging', @change='onPaging($event)')
 </template>
 
 <script lang="ts">
@@ -31,13 +33,14 @@ export default defineComponent({
     const paging = ref<Paging>({} as Paging);
 
     const getTodos = async (offset = 0, limit = 10, description?: string) => {
-      const response = await fetchTodos(offset, limit, description);
+      const response = await fetchTodos({ offset, limit, description });
 
       todos.value = response.items;
       paging.value = response.meta;
     };
 
     watch(searchTerm, (newSearchTerm) => {
+      // debounce should be here, but let's not make it too perfect :P
       getTodos(0, undefined, newSearchTerm).catch((e) => console.error(e));
     });
 
@@ -49,27 +52,31 @@ export default defineComponent({
     };
   },
   mounted() {
-    // TODO handle err
-    this.getTodos().catch((e) => console.error(e));
+    this.getTodos().catch((e) => this.onError(e));
+  },
+  data() {
+    return {
+      limit: 10,
+      error: false,
+    };
   },
   methods: {
     async createTodo(description: string) {
       try {
         const createdTodo = await createTodo(description);
-        // TODO only slice if paging limit reached
-        const todos = this.todos.slice(0, -1);
+        const todos = this.todos.slice();
 
-        todos.unshift(createdTodo);
+        todos.push(createdTodo);
         this.todos = todos;
       } catch (e) {
-        console.error(e);
+        this.onError(e);
       }
     },
     async updateTodo(todo: Todo) {
       try {
         await updateTodo(todo);
       } catch (e) {
-        console.error(e);
+        this.onError(e);
       }
     },
     async removeTodo(todo: Todo) {
@@ -77,12 +84,15 @@ export default defineComponent({
         await deleteTodo(todo);
         this.todos = this.todos.filter((t) => t._id !== todo._id);
       } catch (e) {
-        console.error(e);
+        this.onError(e);
       }
     },
+    onError(e: Error) {
+      this.error = true;
+      console.error(e);
+    },
     onPaging(paging: Paging) {
-      // TODO handle err
-      this.getTodos(paging.offset, paging.limit).catch((e) => console.error(e));
+      this.getTodos(paging.offset, paging.limit).catch((e) => this.onError(e));
     },
   },
 });
@@ -95,9 +105,8 @@ $todos-width: 589px;
   min-height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   box-sizing: border-box;
-  padding: 50px 25px;
+  padding: 100px 25px 50px 25px;
 }
 
 .todo-app {
@@ -109,5 +118,16 @@ $todos-width: 589px;
 
 .search {
   margin-bottom: 1rem;
+}
+
+.todo-list-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .error {
+    margin-left: 1px;
+    color: red;
+  }
 }
 </style>

@@ -36,13 +36,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '../mixins.scss';
+@import '../variables.scss';
 
 .create-todo {
   height: 58px;
   box-sizing: border-box;
   background: rgba(196, 196, 196, 0.09);
   box-shadow: 0 0 0 1px #c6c6c6;
-  border-radius: 12px 12px 0px 0px;
+  border-radius: $component-border-radius $component-border-radius 0px 0px;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
