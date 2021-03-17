@@ -11,15 +11,17 @@ import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
   name: 'checkbox',
-  props: ['checked'],
+  props: { checked: { type: Boolean, required: true } },
 });
 </script>
 
 <style lang="scss" scoped>
+$size: 30px;
+
 .checkbox {
   flex: 0 0 auto;
-  height: 30px;
-  width: 30px;
+  height: $size;
+  width: $size;
   display: flex;
   justify-content: center;
   align-items: center;

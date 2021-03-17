@@ -88,6 +88,7 @@ export default defineComponent({
 
   &_remove {
     @include action-button;
+    // keep it accessible for keyboard
     z-index: -1;
   }
 

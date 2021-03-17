@@ -16,7 +16,7 @@ import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
   name: 'search',
-  props: ['value'],
+  props: { value: { type: String, required: true } },
 });
 </script>
 
