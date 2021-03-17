@@ -27,6 +27,7 @@ button {
 
 input {
   border: none;
+  box-sizing: border-box;
   outline: 0;
   background: transparent;
 }

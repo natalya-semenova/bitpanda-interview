@@ -42,6 +42,8 @@ $height: 32px;
   &_input {
     margin-left: 6px;
     flex: 1 0 auto;
+    height: 20px;
+    font-weight: 300;
   }
 }
 </style>
