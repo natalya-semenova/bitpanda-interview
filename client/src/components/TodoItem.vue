@@ -5,6 +5,7 @@ li.todo-item(:class='todoItemCssClass')
     @change='onDoneChange(todo)'
   )
   span.todo-item_description {{ todo.description }}
+  span.todo-item_created-time - {{ timeElapsedFromCreation }} minutes
   span.todo-item_remove(@click='$emit("remove", todo)')
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
       <line x1="0.715217" y1="1.01405" x2="11.2707" y2="11.5695" stroke="#A3A3A3"/>
@@ -23,6 +24,12 @@ export default defineComponent({
   name: 'todo-item',
   props: { todo: { type: Object as PropType<Todo>, required: true } },
   computed: {
+    timeElapsedFromCreation(): number {
+      const now = Date.now();
+      const created = new Date(this.todo.createdAt).valueOf();
+
+      return Math.round((now - created) / 1000 / 100);
+    },
     todoItemCssClass(): Record<string, boolean> {
       return {
         'todo-item--done': this.todo.done,
@@ -58,11 +65,25 @@ export default defineComponent({
   &_description {
     text-align: left;
     padding: 5px 0;
+    word-break: break-all;
+    font-weight: normal;
   }
 
   &--done &_description {
     text-decoration-line: line-through;
     color: #aeaeae;
+    font-weight: 200;
+  }
+
+  &_created-time {
+    margin: auto 0 17px 6px;
+    // fw200 was not legible
+    font-weight: 300;
+    font-size: 0.625rem;
+    line-height: 0.75rem;
+    // using lighter color to meet the design look & feel
+    color: #a7a7a7;
+    white-space: nowrap;
   }
 
   &_remove {
