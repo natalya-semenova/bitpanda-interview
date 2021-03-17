@@ -1,5 +1,5 @@
 <template lang="pug">
-li.todo-item 
+li.todo-item(:class='todoItemCssClass') 
   checkbox.todo-item_checkbox(
     :checked='todo.done',
     @change='onDoneChange(todo)'
@@ -13,7 +13,7 @@ li.todo-item
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, PropType } from '@vue/composition-api';
 
 import { Todo } from '@/models/todo';
 
@@ -21,15 +21,22 @@ import Checkbox from './CheckBox.vue';
 
 export default defineComponent({
   name: 'todo-item',
-  props: ['todo'],
-  components: {
-    Checkbox,
+  props: { todo: { type: Object as PropType<Todo>, required: true } },
+  computed: {
+    todoItemCssClass(): Record<string, boolean> {
+      return {
+        'todo-item--done': this.todo.done,
+      };
+    },
   },
   methods: {
     onDoneChange(todo: Todo) {
       todo.done = !todo.done;
       this.$emit('done-change', todo);
     },
+  },
+  components: {
+    Checkbox,
   },
 });
 </script>
@@ -51,6 +58,11 @@ export default defineComponent({
   &_description {
     text-align: left;
     padding: 5px 0;
+  }
+
+  &--done &_description {
+    text-decoration-line: line-through;
+    color: #aeaeae;
   }
 
   &_remove {
