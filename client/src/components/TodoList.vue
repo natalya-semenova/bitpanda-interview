@@ -1,21 +1,24 @@
 <template lang="pug">
-  .todo-list
-    <ul>
-      <li>Test</li>
-      <li>Test 2</li>
-    </ul>
+.todo-list
+  <ul>
+    <todo-item></todo-item>
+    <todo-item></todo-item>
+    <todo-item></todo-item>
+  </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
+
+import TodoItem from './TodoItem.vue';
 
 export default defineComponent({
   name: 'todo-list',
   data() {
     return {};
   },
+  components: { TodoItem },
 });
-
 </script>
 
 <style scoped lang="scss">

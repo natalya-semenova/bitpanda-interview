@@ -1,8 +1,6 @@
 <template lang="pug">
   #app.todo-app
-    todo-list(
-      :todos='todos',
-    )
+    todo-list()
 </template>
 
 <script lang="ts">
